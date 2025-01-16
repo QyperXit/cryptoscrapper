@@ -19,7 +19,7 @@ public class CryptoDataServiceController : ControllerBase
     {
         try
         {
-            var result = await _cryptoDataService.RunAutomation();
+            var result = await _cryptoDataService.ScrapeCoinMarket();
             return Ok(result);
         }
         catch (Exception ex)

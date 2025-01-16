@@ -16,7 +16,7 @@ public class CryptoDataService : ICryptoDataService
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    public async Task<int> RunAutomation()
+    public async Task<int> ScrapeCoinMarket()
     {
         HttpClient client = new HttpClient(new HttpClientHandler { CookieContainer = new CookieContainer() });
         client.DefaultRequestHeaders.Add("User-Agent", "Your User Agent String");

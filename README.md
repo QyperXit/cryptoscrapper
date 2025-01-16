@@ -29,8 +29,26 @@ This project is designed to automate the collection of cryptocurrency data, focu
    git clone https://github.com/yourusername/your-repo-name.git
    cd your-repo-name
 
-2. **install dependencies**
+**install dependencies**
 
     ```bash
     dotnet restore
     ```
+**Database Setup:**
+* Ensure MySQL is running.
+* Create a new database for this project.
+* Adjust your connection string in appsettings.json or through environment variables.
+
+   ```bash
+   {
+   "ConnectionStrings": {
+   "DefaultConnection": "Server=localhost;Database=your_db_name;User=your_username;Password=your_password;"
+   }
+   }```
+
+**Database Migration:**
+* Run migrations to set up the database schema:
+   ```bash
+   dotnet run 
+  ```
+
