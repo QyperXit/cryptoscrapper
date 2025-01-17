@@ -1,4 +1,4 @@
-using CryptoScrapper.Services.AutomationService;
+using CryptoScrapper.Services.ScrapeCoinService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CryptoScrapper.Controllers;

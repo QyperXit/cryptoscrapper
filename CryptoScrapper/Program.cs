@@ -1,6 +1,8 @@
 using CryptoScrapper.Persistence.Contexts;
-using CryptoScrapper.Services.AutomationService;
 using CryptoScrapper.Services.CoinDataService;
+using CryptoScrapper.Services.ScrapeCoinService;
+using CryptoScrapper.Services.ScrapeCoinService.Factories;
+using CryptoScrapper.Services.ScrapeCoinService.Parsers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +24,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<ICoinService, CoinService>();
 builder.Services.AddTransient<ICryptoDataService, CryptoDataService>();
+builder.Services.AddScoped<ICryptoHttpClientFactory, CryptoHttpClientFactory>();
+builder.Services.AddScoped<CoinParser>();
 
 var app = builder.Build();
 

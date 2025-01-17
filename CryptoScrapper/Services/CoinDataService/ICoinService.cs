@@ -9,4 +9,6 @@ public interface ICoinService
     Coins CreateCoin(CoinRequesDTO request);
     Coins UpdateCoin(int id, CoinRequesDTO request);
     bool DeleteCoin(int id);
+    Task ClearAllCoins();
+
 }

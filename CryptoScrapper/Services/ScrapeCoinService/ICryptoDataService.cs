@@ -1,4 +1,4 @@
-namespace CryptoScrapper.Services.AutomationService;
+namespace CryptoScrapper.Services.ScrapeCoinService;
 
 public interface ICryptoDataService
 {

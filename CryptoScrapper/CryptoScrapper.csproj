@@ -27,4 +27,8 @@
       <Content Include=".config\dotnet-tools.json" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Services\ScrapeCoinService\Interfaces\" />
+    </ItemGroup>
+
 </Project>

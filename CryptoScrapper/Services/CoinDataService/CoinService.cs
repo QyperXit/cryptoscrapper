@@ -60,4 +60,10 @@ public class CoinService : ICoinService
             
         }
     }
+
+    public async Task ClearAllCoins()
+    {
+        _context.Coins.RemoveRange(_context.Coins);
+        await _context.SaveChangesAsync();
+    }
 }
