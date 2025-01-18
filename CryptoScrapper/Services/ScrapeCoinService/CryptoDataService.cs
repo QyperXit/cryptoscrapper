@@ -1,4 +1,3 @@
-using CryptoScrapper.Persistence.Contexts;
 using CryptoScrapper.Persistence.Models;
 using CryptoScrapper.Services.CoinDataService;
 using CryptoScrapper.Services.CoinDataService.DTOS;
@@ -10,32 +9,28 @@ namespace CryptoScrapper.Services.ScrapeCoinService;
 
 public class CryptoDataService : ICryptoDataService
 {
-    private readonly ApplicationDbContext _context;
-    private readonly ICryptoHttpClientFactory _httpClientFactory;
-    private readonly CoinParser _coinParser;
-    private readonly ICoinService _coinService;
+    private readonly ICryptoHttpClientFactory httpClientFactory;
+    private readonly CoinParser coinParser;
+    private readonly ICoinService coinService;
     private const string BaseUrl = "https://www.coingecko.com/en/categories/depin";
 
     public CryptoDataService(
-        ApplicationDbContext context,
         ICryptoHttpClientFactory httpClientFactory,
         CoinParser coinParser,
         ICoinService coinService)
     {
-        _context = context;
-        _httpClientFactory = httpClientFactory;
-        _coinParser = coinParser;
-        _coinService = coinService;
+        this.httpClientFactory = httpClientFactory;
+        this.coinParser = coinParser;
+        this.coinService = coinService;
     }
 
     public async Task<int> ScrapeCoinMarket()
     {
         try
         {
-            await ClearExistingCoins();
+            await coinService.ClearAllCoins();
             var html = await FetchHtmlContent();
             var coins = await ExtractCoinsFromHtml(html);
-            await SaveCoins(coins);
             return coins.Count;
         }
         catch (Exception ex)
@@ -45,16 +40,9 @@ public class CryptoDataService : ICryptoDataService
         }
     }
 
-    private async Task ClearExistingCoins()
-    {
-    
-        await _coinService.ClearAllCoins();
-
-    }
-
     private async Task<string> FetchHtmlContent()
     {
-        using var client = _httpClientFactory.CreateClient(BaseUrl);
+        using var client = httpClientFactory.CreateClient(BaseUrl);
         return await client.GetStringAsync(BaseUrl);
     }
 
@@ -76,11 +64,10 @@ public class CryptoDataService : ICryptoDataService
 
         foreach (var node in nodes)
         {
-            var (name, symbol, price) = _coinParser.ParseCoinData(node);
+            var (name, symbol, price) = coinParser.ParseCoinData(node);
             
             if (price.HasValue)
             {
-                // Using CoinService to create coins
                 var coinDto = new CoinRequesDTO
                 {
                     Coin = name,
@@ -88,17 +75,11 @@ public class CryptoDataService : ICryptoDataService
                     Price = price.Value
                 };
                 
-                var coin = _coinService.CreateCoin(coinDto);
+                var coin = coinService.CreateCoin(coinDto);
                 coins.Add(coin);
             }
         }
 
         return coins;
-    }
-
-    private async Task SaveCoins(List<Coins> coins)
-    {
-        // No need to implement this as we're using CoinService to create coins
-        await Task.CompletedTask;
     }
 }
